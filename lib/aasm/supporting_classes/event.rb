@@ -81,6 +81,10 @@ module AASM
         end
       end
 
+      def to
+        @transitions.map(&:to).uniq
+      end
+
     private
 
       def update(options = {}, &block)

@@ -105,9 +105,21 @@ module AASM
     aasm_events_for_current_state.select{ |e| self.send(("may_" + e.to_s + "?").to_sym) }
   end
 
+  def aasm_event_objects_for_state(state)
+    self.class.aasm_events.values.select {|event| event.transitions_from_state?(state) }
+  end
+
   def aasm_events_for_state(state)
-    events = self.class.aasm_events.values.select {|event| event.transitions_from_state?(state) }
-    events.map {|event| event.name}
+    aasm_event_objects_for_state(state).map {|event| event.name}
+  end
+
+  def aasm_states_from_current_state
+    aasm_states_from_state(aasm_current_state)
+  end
+
+  def aasm_states_from_state(state)
+    events = aasm_event_objects_for_state(state)
+    events.map {|event| event.to }.flatten
   end
 
   def aasm_human_state
