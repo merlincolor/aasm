@@ -114,8 +114,6 @@ module AASM
     AASM::SupportingClasses::Localizer.new.human_state_name(self.class, aasm_current_state)
   end
 
-private
-
   def aasm_persistable?
     self.respond_to?(:aasm_read_state) || self.private_methods.include?('aasm_read_state')
   end
